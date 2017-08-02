@@ -5,15 +5,19 @@ var FeedParser = require('feedparser'),
   url = require('url'),
   fs = require('fs');
 
-exports.registerMigrator = function (hexo) {  
-  hexo.extend.migrator.register('rss', function (args, callback) {
-    var source = args._.shift();
+exports.registerMigrator = function (hexo) {
+  hexo.extend.migrator.register('medium', function (args, callback) {
+    var source = "https://medium.com/feed/"
+    var username = args._.shift();
 
-    if (!source) {
+    if (!username) {
       var help = [
-        'Usage: hexo migrate rss <source> [--alias]',
+        'Usage: hexo migrate medium <username> [--alias, --linkonly]',
         '',
-        'For more help, you can check the docs: http://hexo.io/docs/migration.html'
+        'Ex. hexo migrate medium @blockmason',
+        '',
+        'Use --linkonly to discard content. Useful for link blogs.'
+        'For more help, you can check the docs: https://github.com/blockmason/hexo-migrator-medium.com'
       ];
 
       console.log(help.join('\n'));
@@ -25,12 +29,8 @@ exports.registerMigrator = function (hexo) {
       untitledPostCounter = 0,
       stream;
 
-    // URL regular expression from: http://blog.mattheworiordan.com/post/13174566389/url-regular-expression-for-links-with-or-without-the
-    if (source.match(/((([A-Za-z]{3,9}:(?:\/\/)?)(?:[-;:&=\+\$,\w]+@)?[A-Za-z0-9.-]+|(?:www.|[-;:&=\+\$,\w]+@)[A-Za-z0-9.-]+)((?:\/[\+~%\/.\w-_]*)?\??(?:[-\+=&;%@.\w_]*)#?(?:[.\!\/\\w]*))?)/)) {
-      stream = request(source);
-    } else {
-      stream = fs.createReadStream(source);
-    }
+    var url = source + username
+    stream = request(url);
 
     log.i('Analyzing %s...', source);
 
@@ -62,11 +62,16 @@ exports.registerMigrator = function (hexo) {
           title: item.title,
           date: item.date,
           tags: item.categories,
+          medium_link: item.link,
           content: tomd(item.description)
         };
 
         if (args.alias) {
           newPost.alias = url.parse(item.link).pathname;
+        }
+
+        if (args.linkonly) {
+          newPost.content = null;
         }
 
         posts.push(newPost);
