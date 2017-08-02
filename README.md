@@ -1,11 +1,12 @@
-# RSS migrator
+# Medium.com migrator
 
-Migrate your blog from RSS to [Hexo].
+Migrate your blog from Medium.com to [Hexo].
 
 ## Install
+Add this to your `package.json`
+```json
+    "hexo-migrator-medium.com": "git@github.com:blockmason/hexo-migrator-medium.com.git",
 
-``` bash
-$ npm install hexo-migrator-rss --save
 ```
 
 ## Usage
