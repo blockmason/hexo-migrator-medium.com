@@ -16,7 +16,7 @@ exports.registerMigrator = function (hexo) {
         '',
         'Ex. hexo migrate medium @blockmason',
         '',
-        'Use --linkonly to discard content. Useful for link blogs.'
+        'Use --linkonly to discard content. Useful for link blogs.',
         'For more help, you can check the docs: https://github.com/blockmason/hexo-migrator-medium.com'
       ];
 
