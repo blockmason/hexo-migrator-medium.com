@@ -63,6 +63,7 @@ exports.registerMigrator = function (hexo) {
           date: item.date,
           tags: item.categories,
           link: item.link,
+          category: 'medium.com',
           content: tomd(item.description)
         };
 
