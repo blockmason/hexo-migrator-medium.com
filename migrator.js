@@ -62,7 +62,7 @@ exports.registerMigrator = function (hexo) {
           title: item.title,
           date: item.date,
           tags: item.categories,
-          medium_link: item.link,
+          link: item.link,
           content: tomd(item.description)
         };
 
@@ -71,7 +71,7 @@ exports.registerMigrator = function (hexo) {
         }
 
         if (args.linkonly) {
-          newPost.content = null;
+          newPost.go_to_website = true;
         }
 
         posts.push(newPost);
